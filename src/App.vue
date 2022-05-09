@@ -1,4 +1,6 @@
 <template lang="pug">
+.outer-layer
+  router-view
 </template>
 
 <style lang="sass">

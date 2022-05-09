@@ -5,13 +5,12 @@ function resolve(dir) {
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   devServer: {
-    port: process.env.VUE_APP_BASE_PORT,
     proxy: {
-      '/api': {
+      '/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/': {
         target: process.env.VUE_APP_BASE_URL,
-        changeOrigin: true, // 是否跨域
+        changeOrigin: true,
         pathRewrite: {
-          '^/api': '' // 把 `/api` 從字串移除
+          '^/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/': ''
         }
       }
     }
