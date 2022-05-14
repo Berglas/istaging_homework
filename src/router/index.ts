@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: to => {
+      return { path: '/book_shelf' };
+    }
   },
   {
     path: '/book_shelf',
@@ -13,14 +13,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/BookShelf/index.vue')
   },
   {
-    path: '/book_detail/:id',
+    path: '/book_detail',
     name: 'BookDetail',
     component: () => import('../views/BookDetail/index.vue')
   }
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
 });
 

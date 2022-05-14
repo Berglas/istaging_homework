@@ -1,7 +1,3 @@
-const path = require('path');
-function resolve(dir) {
-  return path.join(__dirname, dir);
-}
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   devServer: {
@@ -15,11 +11,10 @@ module.exports = {
       }
     }
   },
-
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'sass',
-      patterns: ['./src/styles/variables.sass', './src/styles/zIndex.sass']
+      patterns: ['./src/styles/variables.sass', './src/styles/common.sass']
     }
   }
 };
