@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js 14.x
+      - name: Use Node.js 14.18.2
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 14.18.2
 
       - name: init dependencies
         run: npm install --legacy-peer-deps
