@@ -1,5 +1,6 @@
 node_modules
 /dist
+.yarn.lock
 
 # e2e
 /tests/e2e/videos/
