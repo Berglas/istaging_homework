@@ -9,14 +9,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: npm install
-      - run: npm run build
+      - uses: actions/checkout@v3
+
+      - name: init dependencies
+        run: npm install
+
+      - name: build
+        run: npm run build
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
