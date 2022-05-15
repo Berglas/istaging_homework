@@ -2,11 +2,11 @@ module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   devServer: {
     proxy: {
-      '/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/': {
-        target: process.env.VUE_APP_BASE_URL,
+      '/api': {
+        target: 'https://demo.api-platform.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/': ''
+          '^/api': ''
         }
       }
     }

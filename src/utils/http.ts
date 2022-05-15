@@ -1,10 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, HeadersDefaults } from 'axios';
 
 const service: AxiosInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'development'
-      ? '/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/'
-      : process.env.VUE_APP_BASE_URL,
+  baseURL: process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_URL,
   timeout: 1000 * 120
 });
 

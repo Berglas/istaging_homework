@@ -1,0 +1,41 @@
+name: Deploy gh-pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Web
+    env:
+      MY_SECRETS: ${{secrets.token}}
+      PUBLISH_DIR: ./dist
+      USER_NAME: Berglas
+      USER_EMAIL: sasuke01260616@gmail.com
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: init dependencies
+        run: npm install
+
+      - name: build
+        run: npm run build
+
+      - name: deploy to gh-pages
+        run: |
+          cd $PUBLISH_DIR
+          git init
+          git config --local user.email $USER_NAME
+          git config --local user.name $USER_EMAIL
+          git status
+          git remote add origin https://$MY_SECRETS@github.com/$GITHUB_REPOSITORY.git
+          git branch -m master main
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "deploy to Github pages"
+          git push -f origin gh-pages
+          echo 🤘 deploy gh-pages complete.

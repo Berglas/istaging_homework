@@ -99,13 +99,13 @@ export type BookFormData = {
 
 const api = {
   getBookList: (params: ReadBookReq): Promise<HttpRes<ReadBookRes>> => {
-    return http.get('/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books', params);
+    return http.get('/books', params);
   },
   addBook: (params: AddBookReq): Promise<HttpRes<AddBookRes>> => {
-    return http.post('/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books', params);
+    return http.post('/books', params);
   },
   editBook: (params: EditBookReq): Promise<HttpRes<EditBookRes>> => {
-    return http.patch(`/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books/${params.id}`, params);
+    return http.patch(`/books/${params.id}`, params);
   }
 };
 
