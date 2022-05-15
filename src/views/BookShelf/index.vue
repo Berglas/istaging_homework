@@ -2,8 +2,8 @@
 .wrapper
   .header
     .title The Book Shelf
-    .create-button.button(@click="openCreatePanel")
-      p create {{editPanelIsOpen}}
+    .create-button.button(@click="nextPage")
+      p create
   .content
     .list
       EditPanel(v-model='editPanelIsOpen' :mode='ActionMode.ADD')
@@ -12,6 +12,7 @@
         .book__content
           .book__content__title {{bookItem.title}}
           .book__content__author {{bookItem.author}}
+      Observer(:rootSelector="'.list'" :handleIntersect='nextPage')
 </template>
 
 <script setup lang="ts">
@@ -20,25 +21,19 @@ import { ref, onMounted, watch } from 'vue';
 import api, { BookInfo, EditBookReq, BookFormData } from '@/api/book';
 import { ActionMode } from '@/typeCollect/common';
 import EditPanel from './EditPanel.vue';
-import { useBookFormDataStore } from '@/store/bookInfo';
-const useBookFormData = useBookFormDataStore();
+import Observer from '@/components/Observer/index.vue';
+import getBookList from './composables/getBookList';
+
+import { useBookStore } from '@/store/bookInfo';
+const { bookList, nextPage } = getBookList();
+
+const bookStore = useBookStore();
 
 const router: Router = useRouter();
 
-const bookList = ref<Array<BookInfo>>([]);
+// const bookList = ref<Array<BookInfo>>([]);
 
 const editPanelIsOpen = ref<boolean>(false);
-
-onMounted(() => {
-  api
-    .getBookList({ page: 1, itemsPerPage: 2 })
-    .then(res => {
-      bookList.value = res.data['hydra:member'];
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
 
 const displayDetail = (data: BookInfo) => {
   let bookData: BookFormData = {
@@ -49,7 +44,7 @@ const displayDetail = (data: BookInfo) => {
     description: data.description,
     publicationDate: data.publicationDate
   };
-  useBookFormData.setBookFormData(bookData);
+  bookStore.setBookFormData(bookData);
   router.push({
     name: 'BookDetail'
   });
@@ -91,8 +86,10 @@ $book-distance: 2.9%
   .content
     height: calc(100% - 60px)
     width: 100%
-    overflow: auto
     .list
+      height: 100%
+      width: 100%
+      overflow: auto
       display: flex
       flex-flow: row wrap
     .book

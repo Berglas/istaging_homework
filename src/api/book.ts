@@ -2,8 +2,8 @@ import http, { HttpRes } from '../utils/http';
 import { Sorted } from '@/typeCollect/common';
 
 export type ReadBookReq = {
-  page: number;
-  itemsPerPage: number;
+  page?: number;
+  itemsPerPage?: number;
   archived?: boolean;
   'order[id]'?: Sorted;
   'order[title]'?: Sorted;
@@ -99,7 +99,7 @@ export type BookFormData = {
 
 const api = {
   getBookList: (params: ReadBookReq): Promise<HttpRes<ReadBookRes>> => {
-    return http.get('/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books');
+    return http.get('/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books', params);
   },
   addBook: (params: AddBookReq): Promise<HttpRes<AddBookRes>> => {
     return http.post('/https://cors-anywhere-dot-vr-cam-161603.uc.r.appspot.com/books', params);

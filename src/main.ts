@@ -6,7 +6,7 @@ import { setupStore } from '@/store';
 
 createApp(App).use(router).mount('#app');
 
-async function init() {
+function init() {
   const app = createApp(App);
   setupStore(app);
   app.use(router);

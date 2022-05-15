@@ -7,23 +7,16 @@
       p Edit
   .content
     | {{bookFormData}}
-    //- .list
-    //-   EditPanel(v-model='editPanelIsOpen' :mode='ActionMode.ADD')
-    //-   .book(v-for='bookItem in bookList' :key='bookItem.id') 
-    //-     .book__img(@click='displayDetail(bookItem)')
-    //-     .book__content
-    //-       .book__content__title {{bookItem.title}}
-    //-       .book__content__author {{bookItem.author}}
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch, defineProps, PropType } from 'vue';
 import api, { BookInfo, EditBookReq, BookFormData } from '@/api/book';
 import { ActionMode } from '@/typeCollect/common';
-import { useBookFormDataStore } from '@/store/bookInfo';
+import { useBookStore } from '@/store/bookInfo';
 import EditPanel from '@/views/BookShelf/EditPanel.vue';
 
-const useBookFormData = useBookFormDataStore();
+const bookStore = useBookStore();
 
 const editPanelIsOpen = ref<boolean>(false);
 
@@ -39,41 +32,10 @@ const bookFormData = ref<BookFormData>({
 const openEditPanel = () => {
   editPanelIsOpen.value = true;
 };
-// const props = defineProps({
-//   bookFormData: {
-//     type: Array,
-//     default: () => []
-//   }
-// });
-// watch(
-//   () => props.bookFormData,
-//   newVal => {
-//     console.log(newVal);
-//   },
-//   { immediate: true }
-// );
 
 onMounted(() => {
-  bookFormData.value = useBookFormData.BookFormData;
-
-  // bookFormData.value = JSON.parse(sessionStorage.getItem('BookDetail') as string);
-  // api
-  //   .getBookList({ page: 1, itemsPerPage: 2 })
-  //   .then(res => {
-  //     bookList.value = res.data['hydra:member'];
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
+  bookFormData.value = bookStore.BookFormData;
 });
-
-// const openModal = (bookId = '') => {
-//   if (bookId === '') {
-//     console.log();
-//   } else {
-//     console.log();
-//   }
-// };
 </script>
 
 <style lang="sass" scoped>

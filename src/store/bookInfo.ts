@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import type { BookFormData } from '@/api/book';
+import type { BookFormData, BookInfo } from '@/api/book';
 
-export const useBookFormDataStore = defineStore('BookFormData', {
+export const useBookStore = defineStore('bookInfo', {
   state: () => {
     return {
       BookFormData: {
@@ -11,13 +11,21 @@ export const useBookFormDataStore = defineStore('BookFormData', {
         isbn: '',
         publicationDate: '',
         title: ''
-      } as BookFormData
+      } as BookFormData,
+      BookList: [] as Array<BookInfo>,
+      CurrentPage: 1
     };
   },
 
   actions: {
-    setBookFormData(BookFormData: BookFormData) {
-      this.BookFormData = BookFormData;
+    setBookFormData(bookFormData: BookFormData) {
+      this.BookFormData = bookFormData;
+    },
+    setBookList(bookList: Array<BookInfo>) {
+      this.BookList = bookList;
+    },
+    setCurrentPage(currentPage: number) {
+      this.CurrentPage = currentPage;
     }
   },
 
