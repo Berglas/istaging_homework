@@ -6,11 +6,13 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js 14
         uses: actions/setup-node@v2
@@ -22,9 +24,14 @@ jobs:
           npm install
 
       - name: npm build
-        run: npm build --if-present
+        run: npm build
 
       - name: Add heroku remote
-        run: |
-          echo Success
-          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+      if: ${{success()}}
+      run: |
+        echo Success
+        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+
+      - name: Deploy to heroku
+      run: |
+        git push heroku HEAD:main -f
