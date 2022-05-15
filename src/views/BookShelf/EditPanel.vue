@@ -3,22 +3,29 @@ Modal(v-model='selfDisplay')
   template(v-slot:content)
     .form
       .input
-        .input__description 
-          p Name
+        .input__description.required
+          span Name
         input.input__content(v-model='form.title')
       .input
-        .input__description Author
+        .input__description.required
+          span Author
         input.input__content(v-model='form.author')
-      .input  
-        .input__description Pub Date
-        input.input__content(v-model='form.publicationDate')
-      .input  
-        .input__description ISBN
+      .input
+        .input__description.required
+          span Pub Date
+        input.input__content(v-model='form.publicationDate' type="date")
+      .input
+        .input__description
+          span ISBN
         input.input__content(v-model='form.isbn')
-      .input  
-        .input__description Description
-        input.input__content(v-model='form.description')
-      .button(@click='handleBook(form)') Save
+      .input
+        .input__description.required
+          span Description
+        textarea.input__textarea(v-model='form.description')
+      .input
+        .input__description
+        .input__button.button(@click='handleBook(form)')
+          p Save
 </template>
 
 <script setup lang="ts">
@@ -26,7 +33,9 @@ import { defineProps, defineEmits, ref, onMounted, watch, PropType } from 'vue';
 import api, { EditBookReq, AddBookReq, BookFormData } from '@/api/book';
 import { ActionMode } from '@/typeCollect/common';
 import Modal from '@/components/Modal/index.vue';
-const show = ref<boolean>(true);
+import editPanel from './composables/editPanel';
+const { goToDetail } = editPanel();
+
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -72,11 +81,11 @@ watch(
 
 const form = ref<BookFormData>({
   id: '',
-  author: 'test author',
-  description: 'test description',
+  author: '',
+  description: '',
   isbn: '',
-  publicationDate: '2022-05-08T05:51:57.230Z',
-  title: 'test name'
+  publicationDate: '',
+  title: ''
 } as BookFormData);
 
 watch(
@@ -92,16 +101,18 @@ const handleBook = (data: BookFormData) => {
     return;
   }
 
+  let archivedAt = new Date().toISOString();
+  let publicationDate = new Date(data.publicationDate).toISOString();
   if (props.mode === ActionMode.ADD) {
     let params: AddBookReq = {
       author: data.author,
       description: data.description,
       isbn: data.isbn as string,
-      publicationDate: data.publicationDate,
+      publicationDate: publicationDate,
       title: data.title,
       reviews: [],
       cover: '',
-      archivedAt: data.publicationDate
+      archivedAt: archivedAt
     };
     addBook(params);
   } else if (props.mode === ActionMode.EDIT) {
@@ -110,11 +121,12 @@ const handleBook = (data: BookFormData) => {
       author: data.author,
       description: data.description,
       isbn: data.isbn as string,
-      publicationDate: data.publicationDate,
+      publicationDate: publicationDate,
       title: data.title
     };
     editBook(params);
   }
+  selfDisplay.value = false;
 };
 
 const checkData = (data: BookFormData): boolean => {
@@ -145,7 +157,14 @@ const showError = (message: string) => {
 };
 
 const addBook = (data: AddBookReq) => {
-  api.addBook(data);
+  api
+    .addBook(data)
+    .then(res => {
+      goToDetail(res.data);
+    })
+    .catch(err => {
+      showError(err);
+    });
 };
 
 const editBook = (data: EditBookReq) => {
@@ -154,19 +173,58 @@ const editBook = (data: EditBookReq) => {
 </script>
 
 <style lang="sass" scoped>
-.input
-  display: flex
-  flex-flow: row nowrap
-  // justify-content: center
-  align-content: center
-  .input__description
+.form
+  height: 500px
+  width: 450px
+  padding: 24px
+  @include phone-screen
+    height: 90%
+    width: 90%
+    min-width: 320px
+    padding: 20px
+  .input
+    position: relative
     display: flex
-    justify-content: center
-    align-content: center
-    height: 40px
-  .input__content
-    padding: 4px
-    border: 1px solid rgba(188, 188,188, 1)
-    border-radius: 4px
-    margin-left: 8px
+    flex-flow: row nowrap
+    margin-bottom: 19px
+    @include phone-screen
+      width: 100%
+      flex-flow: column wrap
+      margin-bottom: 7px
+    .input__description
+      position: relative
+      width: 90px
+      @include phone-screen
+        width: 100%
+        height: 19px
+      span
+        @include center-x
+        height: 18px
+        line-height: 18.75px
+    .input__content
+      height: 40px
+      width: 300px
+      padding: 4px
+      border: 1px solid rgba(188, 188,188, 1)
+      border-radius: 4px
+      @include phone-screen
+        width: 100%
+    .input__button
+      height: 48px
+      width: 150px
+      @include phone-screen
+        height: 36px
+        width: 120px
+        position: absolute
+        top: calc(50% + 12px)
+        left: 50%
+        transform: translate(-50%, -50%)
+    .input__textarea
+      border: 1px solid rgba(188, 188,188, 1)
+      border-radius: 4px
+      resize: none
+      width: 300px
+      height: 160px
+      @include phone-screen
+        width: 100%
 </style>

@@ -71,6 +71,12 @@ $sidebar-width: 12rem
   top: 50%
   transform: translate(-50%, -50%)
 
+@mixin center-x
+  position: absolute
+  left: 0%
+  top: 50%
+  transform: translate(0%, -50%)
+
 @mixin flex_center
   display: flex
   justify-content: center
@@ -83,7 +89,7 @@ $sidebar-width: 12rem
 @mixin pc-screen
   @media all and (min-width: $pc-size)
     @content
-@mixin pad-screen１
+@mixin pad-screen
   @media all and (min-width: $pad-size) and (max-width: calc(#{$pc-size} - 1px))
     @content
 @mixin small-pad-screen

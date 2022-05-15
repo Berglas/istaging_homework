@@ -37,8 +37,8 @@ const closeModal = () => {
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
-  height: 50%
-  width: 50%
+  // height: 50%
+  // width: 50%
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2)
   background: rgba(255, 255, 255, 1)
   border-radius: 4px
@@ -53,8 +53,8 @@ const closeModal = () => {
     border-radius: 4px
   .modal__mask
     position: absolute
-    top: -100%
-    left: -100%
+    top: -100vh
+    left: -100vw
     height: 200vh
     width: 200vw
     background: rgba(125, 125, 125, .5)
